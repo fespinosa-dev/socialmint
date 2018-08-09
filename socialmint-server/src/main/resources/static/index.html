@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Client chat</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    </head>
+    <body>
+        <div>
+            <textarea id="textarea" rows="4" cols="50"></textarea>
+            <input id="button"  type="button" value="send" />
+            <a href="/logout">logout</a>
+            <ul id="onlineUsers">
+            </ul>
+        </div>
+        <script>
+            var stompClient = null;
+            var socket = new SockJS('/gs-guide-websocket');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/user/queue/reply', function (greeting) {
+                    console.log(greeting);
+                });
+            });
+
+            function sendName() {
+                let textArea = document.querySelector('#textarea');
+                stompClient.send("/app/message", {}, JSON.stringify({'username': "Fernando", to:"marco", content: textArea.value}));
+            }
+
+            function showGreeting(message) {
+                console.log(`greeting ${message}`);
+            }
+
+            document.querySelector('#button').addEventListener('click', function (e) {
+                e.preventDefault();
+                sendName();
+            });
+
+            fetch('http://localhost:8080/onlineUsers', {credentials: 'include'}).then(res => {
+                return res.json();
+            }).then(users => {
+                let usersList = document.querySelector('#onlineUsers');
+                for (var i = 0; i < users.length; i++) {
+                      let listItem = document.createElement("li");
+                      listItem.innerHTML = users[i].username;
+                      usersList.appendChild(listItem);
+                }
+
+            });
+
+        </script>
+    </body>
+</html>
