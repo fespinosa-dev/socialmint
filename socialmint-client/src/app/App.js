@@ -7,6 +7,7 @@ import { Route } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Login from "../user/Login";
+import SignUp from "../user/SignUp";
 import { withCookies, Cookies } from "react-cookie";
 
 // import logo from './logo.svg';
@@ -18,6 +19,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <Route exact path="/signup" component={SignUp} />
         <Route exact path="/" component={Login} />
         <Grid container spacing={0}>
           <Route

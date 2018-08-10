@@ -5,75 +5,78 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Button from "@material-ui/core/Button";
+import backgroundImage from "./background.png";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
-  container: {
-    margin: "auto",
-    maxWidth: "800px"
-  },
-  margin: {
+  wrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     margin: theme.spacing.unit * 2
+  },
+  root: {
+    marginTop: "15%",
+    width: "40%",
+    height: "300px",
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    padding: "20px"
+  },
+  [theme.breakpoints.down("xs")]: {
+    root: {
+      width: "90%"
+    }
+  },
+  button: {
+    marginTop: "20px"
   }
 });
+
 class Login extends React.Component {
-  state = {
-    password: "",
-    showPassword: false
-  };
-
-  handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value });
-  };
-
-  handleMouseDownPassword = event => {
-    event.preventDefault();
-  };
-
-  handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
-  };
+  loadBackgroundImage() {
+    document.body.style.background = `url(${backgroundImage}) center center  no-repeat no-repeat fixed`;
+    document.body.style.backgroundSize = "cover";
+  }
 
   render() {
     const { classes } = this.props;
+    this.loadBackgroundImage();
     return (
-      <Paper className={classes.container}>
-        <FormControl className={classes.margin}>
-          <InputLabel htmlFor="input-with-icon-adornment">User</InputLabel>
-          <Input
-            id="input-with-icon-adornment"
-            startAdornment={
-              <InputAdornment position="start">
-                <AccountCircle />
-              </InputAdornment>
-            }
-          />
-          <Input
-            id="adornment-password"
-            type={this.state.showPassword ? "text" : "password"}
-            value={this.state.password}
-            onChange={this.handleChange("password")}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="Toggle password visibility"
-                  onClick={this.handleClickShowPassword}
-                  onMouseDown={this.handleMouseDownPassword}
-                >
-                  {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          <InputLabel htmlFor="adornment-password">Password</InputLabel>
-        </FormControl>
-      </Paper>
+      <div className={classes.wrapper}>
+        <Paper className={classes.root}>
+          <Typography variant="display2" gutterBottom>
+            Social Mint Login
+          </Typography>
+          <FormControl>
+            <InputLabel htmlFor="user">User</InputLabel>
+            <Input fullWidth id="user" className={classes.input} />
+          </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Input
+              fullWidth
+              id="password"
+              type="password"
+              className={classes.input}
+            />
+          </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Enter
+          </Button>
+          <Typography noWrap gutterBottom align="right">
+            <Link to={"/signup"}>Forgot password?</Link>
+          </Typography>
+        </Paper>
+      </div>
     );
   }
 }
