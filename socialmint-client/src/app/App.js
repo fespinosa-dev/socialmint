@@ -3,26 +3,77 @@ import MenuBar from "../components/MenuBar";
 import UserList from "../components/UserList";
 import ChatBox from "../components/ChatBox";
 import TopNavigation from "../components/TopNavigation";
-import { Route } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Login from "../user/Login";
 import SignUp from "../user/SignUp";
-import { withCookies, Cookies } from "react-cookie";
-
-// import logo from './logo.svg';
+import { getCurrentUser } from "../util/APIUtils";
+import { ACCESS_TOKEN } from "../constants";
+import PrivateRoute from "../common/PrivateRoute";
 import "./App.css";
 
 class App extends Component {
-  render() {
-    const { cookies } = this.props;
+  state: {
+    currentUser: null,
+    isAuthenticated: false,
+    isLoading: false
+  };
 
+  loadCurrentUser() {
+    this.setState({
+      isLoading: true
+    });
+    getCurrentUser()
+      .then(response => {
+        this.setState({
+          currentUser: response,
+          isAuthenticated: true,
+          isLoading: false
+        });
+      })
+      .catch(error => {
+        this.setState({
+          isLoading: false
+        });
+      });
+  }
+
+  componentWillMount() {
+    this.loadCurrentUser();
+  }
+
+  handleLogout = (
+    redirectTo = "/login",
+    notificationType = "success",
+    description = "You're successfully logged out."
+  ) => {
+    localStorage.removeItem(ACCESS_TOKEN);
+
+    this.setState({
+      currentUser: null,
+      isAuthenticated: false
+    });
+
+    this.props.history.push(redirectTo);
+  };
+
+  handleLogin = () => {
+    this.loadCurrentUser();
+    this.props.history.push("/home");
+  };
+
+  render() {
     return (
       <div className="App">
         <Route exact path="/signup" component={SignUp} />
-        <Route exact path="/" component={Login} />
+        <Route
+          exact
+          path="/"
+          render={props => <Login onLogin={this.handleLogin} {...props} />}
+        />
         <Grid container spacing={0}>
-          <Route
+          <PrivateRoute
             exact
             path="/(home|search|favorites|nearby)"
             render={() => {
@@ -34,39 +85,42 @@ class App extends Component {
             }}
           />
           <Grid item xs={12}>
-            <Route
+            <PrivateRoute
               exact
               path="/(home|search|favorites|nearby)"
+              authenticated={this.state.isAuthenticated}
               render={props => {
                 return (
                   <Grid item xs={12}>
-                    <TopNavigation history={props.history} />
+                    <TopNavigation {...props} />
                   </Grid>
                 );
               }}
             />
           </Grid>
           <Grid item xs={12}>
-            <Route
+            <PrivateRoute
               path="/search"
+              authenticated={this.state.isAuthenticated}
               render={props => {
                 return (
                   <Paper>
                     <Grid item xs={12}>
-                      <UserList history={props.history} />
+                      <UserList {...props} />
                     </Grid>
                   </Paper>
                 );
               }}
             />
-            <Route
+            <PrivateRoute
+              authenticated={this.state.isAuthenticated}
               path="/chatroom"
               render={props => {
                 return (
                   <Paper>
                     <Grid item xs={12}>
                       <ChatBox
-                        userLoggedIn={cookies.get("JUSERNAME")}
+                        userLoggedIn={this.state.currentUser}
                         location={props.location}
                       />
                     </Grid>
@@ -85,4 +139,4 @@ class App extends Component {
   }
 }
 
-export default withCookies(App);
+export default withRouter(App);
