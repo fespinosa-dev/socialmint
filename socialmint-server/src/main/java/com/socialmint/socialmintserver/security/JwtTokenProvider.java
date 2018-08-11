@@ -1,4 +1,4 @@
-package com.socialmint.socialmintserver.config;
+package com.socialmint.socialmintserver.security;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

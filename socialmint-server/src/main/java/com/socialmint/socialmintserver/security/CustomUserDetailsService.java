@@ -1,5 +1,6 @@
-package com.socialmint.socialmintserver.config;
+package com.socialmint.socialmintserver.security;
 
+import com.socialmint.socialmintserver.security.UserPrincipal;
 import com.socialmint.socialmintserver.model.User;
 import com.socialmint.socialmintserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

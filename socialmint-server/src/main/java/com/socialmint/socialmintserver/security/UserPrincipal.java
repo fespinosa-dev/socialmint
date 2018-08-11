@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.socialmint.socialmintserver.config;
+package com.socialmint.socialmintserver.security;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.socialmint.socialmintserver.model.User;
 import org.springframework.security.core.GrantedAuthority;

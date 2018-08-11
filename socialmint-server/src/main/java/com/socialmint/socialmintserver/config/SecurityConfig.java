@@ -1,5 +1,8 @@
 package com.socialmint.socialmintserver.config;
 
+import com.socialmint.socialmintserver.security.CustomUserDetailsService;
+import com.socialmint.socialmintserver.security.JwtAuthenticationEntryPoint;
+import com.socialmint.socialmintserver.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;

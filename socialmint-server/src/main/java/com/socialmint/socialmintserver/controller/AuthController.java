@@ -1,6 +1,6 @@
 package com.socialmint.socialmintserver.controller;
 
-import com.socialmint.socialmintserver.config.JwtTokenProvider;
+import com.socialmint.socialmintserver.security.JwtTokenProvider;
 import com.socialmint.socialmintserver.exceptions.AppException;
 import com.socialmint.socialmintserver.model.Role;
 import com.socialmint.socialmintserver.model.RoleName;
@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
+
 /**
  *
  * @author fespinosa
@@ -69,12 +70,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
