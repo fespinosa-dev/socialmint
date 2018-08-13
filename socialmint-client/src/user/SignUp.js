@@ -63,9 +63,11 @@ class SignUp extends React.Component {
     this.setState({ open: true });
   };
 
-  handleChange = event => {};
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
 
     const signupRequest = {
@@ -79,14 +81,13 @@ class SignUp extends React.Component {
         {
           this.setState({ open: true, succes: true });
         }
-        this.props.history.push("/login");
       })
       .catch(error => {
         {
           this.setState({ open: true, succes: false });
         }
       });
-  }
+  };
 
   render() {
     const { username, name, password, email } = this.state;
@@ -118,7 +119,7 @@ class SignUp extends React.Component {
               onChange={this.handleChange}
               name="email"
               value={email}
-              validators={["required"]}
+              validators={["required", "isEmail"]}
               errorMessages={["this field is required"]}
               className={classes.input}
             />

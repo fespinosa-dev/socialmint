@@ -49,13 +49,7 @@ class Login extends React.Component {
   };
 
   handleChange = event => {
-    const value = event.target.value;
-    const type = event.target.getAttribute("type");
-    if (type == "text") {
-      this.setState({ usernameOrEmail: value });
-    } else {
-      this.setState({ password: value });
-    }
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   loadBackgroundImage() {
