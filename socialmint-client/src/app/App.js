@@ -67,7 +67,7 @@ class App extends Component {
       <div className="App">
         <Route
           exact
-          path="/"
+          path="/login"
           render={props => <Login onLogin={this.handleLogin} {...props} />}
         />
         <Route exact path="/signup" component={SignUp} />
@@ -88,7 +88,11 @@ class App extends Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <PrivateRoute path="/search" component={UserList} />
+            <PrivateRoute
+              authenticated={this.state.isAuthenticated}
+              path="/search"
+              component={UserList}
+            />
             <PrivateRoute
               authenticated={this.state.isAuthenticated}
               path="/chatroom"

@@ -6,6 +6,12 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { signup } from "../util/APIUtils";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import SnackbarContentWrapper from "../common/SnackbarContent";
 
 const styles = theme => ({
   wrapper: {
@@ -37,18 +43,53 @@ const styles = theme => ({
 
 class SignUp extends React.Component {
   state = {
-    fullName: "",
+    name: "",
     username: "",
     password: "",
-    email: ""
+    email: "",
+    open: false,
+    success: false
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
+
+  handleClick = () => {
+    this.setState({ open: true });
   };
 
   handleChange = event => {};
 
-  handleSubmit = event => {};
+  handleSubmit(event) {
+    event.preventDefault();
+
+    const signupRequest = {
+      name: this.state.name,
+      email: this.state.email,
+      username: this.state.username,
+      password: this.state.password
+    };
+    signup(signupRequest)
+      .then(response => {
+        {
+          this.setState({ open: true, succes: true });
+        }
+        this.props.history.push("/login");
+      })
+      .catch(error => {
+        {
+          this.setState({ open: true, succes: false });
+        }
+      });
+  }
 
   render() {
-    const { username, fullName, password, email } = this.state;
+    const { username, name, password, email } = this.state;
     const { classes } = this.props;
     return (
       <div className={classes.wrapper}>
@@ -60,8 +101,8 @@ class SignUp extends React.Component {
             <TextValidator
               label="Full Name"
               onChange={this.handleChange}
-              name="fullName"
-              value={fullName}
+              name="name"
+              value={name}
             />
             <TextValidator
               label="username"
@@ -101,10 +142,38 @@ class SignUp extends React.Component {
             </Button>
             <Typography noWrap gutterBottom align="left">
               Already registered?
-              <Link to={"/"}>Login now!</Link>
+              <Link to={"/login"}>Login now!</Link>
             </Typography>
           </ValidatorForm>
         </Paper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={this.state.open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+        >
+          {this.state.success ? (
+            <SnackbarContentWrapper
+              onClose={this.handleClose}
+              variant="success"
+              message={
+                <p>
+                  Thank you! You were successfully registered. Please
+                  <Link to="/login"> Login </Link>to continue!
+                </p>
+              }
+            />
+          ) : (
+            <SnackbarContentWrapper
+              onClose={this.handleClose}
+              variant="error"
+              message={<p>Sorry! Something went wrong. Please try again!</p>}
+            />
+          )}
+        </Snackbar>
       </div>
     );
   }
