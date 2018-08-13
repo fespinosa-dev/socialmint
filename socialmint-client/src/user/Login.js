@@ -113,7 +113,7 @@ class Login extends React.Component {
               color="primary"
               className={classes.button}
             >
-              Enter
+              Login
             </Button>
             <Typography noWrap gutterBottom align="left">
               Or

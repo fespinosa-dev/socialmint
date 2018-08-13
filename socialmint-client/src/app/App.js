@@ -65,12 +65,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route exact path="/signup" component={SignUp} />
         <Route
           exact
           path="/"
           render={props => <Login onLogin={this.handleLogin} {...props} />}
         />
+        <Route exact path="/signup" component={SignUp} />
+
         <Grid container spacing={0}>
           <PrivateRoute
             authenticated={this.state.isAuthenticated}
