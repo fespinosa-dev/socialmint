@@ -5,7 +5,6 @@ import ChatBox from "../components/ChatBox";
 import TopNavigation from "../components/TopNavigation";
 import { Route, Switch, withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Login from "../user/Login";
 import SignUp from "../user/SignUp";
 import { getCurrentUser } from "../util/APIUtils";
@@ -74,66 +73,28 @@ class App extends Component {
         />
         <Grid container spacing={0}>
           <PrivateRoute
+            authenticated={this.state.isAuthenticated}
             exact
             path="/(home|search|favorites|nearby)"
-            render={() => {
-              return (
-                <Grid item xs={12}>
-                  <MenuBar />
-                </Grid>
-              );
-            }}
+            component={MenuBar}
           />
           <Grid item xs={12}>
             <PrivateRoute
+              authenticated={this.state.isAuthenticated}
               exact
               path="/(home|search|favorites|nearby)"
-              authenticated={this.state.isAuthenticated}
-              render={props => {
-                return (
-                  <Grid item xs={12}>
-                    <TopNavigation {...props} />
-                  </Grid>
-                );
-              }}
+              component={TopNavigation}
             />
           </Grid>
           <Grid item xs={12}>
-            <PrivateRoute
-              path="/search"
-              authenticated={this.state.isAuthenticated}
-              render={props => {
-                return (
-                  <Paper>
-                    <Grid item xs={12}>
-                      <UserList {...props} />
-                    </Grid>
-                  </Paper>
-                );
-              }}
-            />
+            <PrivateRoute path="/search" component={UserList} />
             <PrivateRoute
               authenticated={this.state.isAuthenticated}
               path="/chatroom"
-              render={props => {
-                return (
-                  <Paper>
-                    <Grid item xs={12}>
-                      <ChatBox
-                        userLoggedIn={this.state.currentUser}
-                        location={props.location}
-                      />
-                    </Grid>
-                  </Paper>
-                );
-              }}
+              component={ChatBox}
             />
           </Grid>
         </Grid>
-        {/*  />
-      <Route path='/' component={TopNavigation} />
-      <Route path='/search' component={UserList} />
-      <Route path='/chatroom' component={ChatBox}/> */}
       </div>
     );
   }

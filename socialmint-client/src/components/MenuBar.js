@@ -12,6 +12,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Grid from "@material-ui/core/Grid";
 
 const styles = {
   root: {
@@ -50,67 +51,69 @@ class MenuBar extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
-      <div className={classes.root}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={auth}
-                onChange={this.handleChange}
-                aria-label="LoginSwitch"
-              />
-            }
-            label={auth ? "Logout" : "Login"}
-          />
-        </FormGroup>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="title"
-              color="inherit"
-              className={classes.flex}
-            >
-              Social Mint Beta
-            </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  aria-owns={open ? "menu-appbar" : null}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </div>
+      <Grid item xs={12}>
+        <div className={classes.root}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={auth}
+                  onChange={this.handleChange}
+                  aria-label="LoginSwitch"
+                />
+              }
+              label={auth ? "Logout" : "Login"}
+            />
+          </FormGroup>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="Menu"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                variant="title"
+                color="inherit"
+                className={classes.flex}
+              >
+                Social Mint Beta
+              </Typography>
+              {auth && (
+                <div>
+                  <IconButton
+                    aria-owns={open ? "menu-appbar" : null}
+                    aria-haspopup="true"
+                    onClick={this.handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    open={open}
+                    onClose={this.handleClose}
+                  >
+                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  </Menu>
+                </div>
+              )}
+            </Toolbar>
+          </AppBar>
+        </div>
+      </Grid>
     );
   }
 }

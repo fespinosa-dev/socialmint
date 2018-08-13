@@ -6,6 +6,7 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import SearchIcon from "@material-ui/icons/Search";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import Grid from "@material-ui/core/Grid";
 
 const styles = {
   root: {
@@ -32,28 +33,30 @@ class TopNavigation extends React.Component {
     const { value } = this.state;
 
     return (
-      <BottomNavigation
-        value={value}
-        onChange={this.handleChange}
-        showLabels
-        className={classes.root}
-      >
-        <BottomNavigationAction
-          value="search"
-          label="Search"
-          icon={<SearchIcon />}
-        />
-        <BottomNavigationAction
-          value="favorites"
-          label="Favorites"
-          icon={<FavoriteIcon />}
-        />
-        <BottomNavigationAction
-          value="nearby"
-          label="Nearby"
-          icon={<LocationOnIcon />}
-        />
-      </BottomNavigation>
+      <Grid item xs={12}>
+        <BottomNavigation
+          value={value}
+          onChange={this.handleChange}
+          showLabels
+          className={classes.root}
+        >
+          <BottomNavigationAction
+            value="search"
+            label="Search"
+            icon={<SearchIcon />}
+          />
+          <BottomNavigationAction
+            value="favorites"
+            label="Favorites"
+            icon={<FavoriteIcon />}
+          />
+          <BottomNavigationAction
+            value="nearby"
+            label="Nearby"
+            icon={<LocationOnIcon />}
+          />
+        </BottomNavigation>
+      </Grid>
     );
   }
 }

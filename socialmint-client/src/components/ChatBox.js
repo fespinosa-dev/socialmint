@@ -9,6 +9,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import MessageList from "./MessageList";
 import FormControl from "@material-ui/core/FormControl";
+import Paper from "@material-ui/core/Paper";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
@@ -96,41 +97,45 @@ class ChatBox extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container spacing={8}>
+      <Paper>
         <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/images/remy.jpg"
-                className={classes.avatar}
-              />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <MessageList messages={this.state.messages} />
-        </Grid>
-        <Grid container justify="center">
-          <Grid item xs={12}>
-            <TextField
-              value={this.state.value}
-              onChange={this.handleChange}
-              placeholder={"type something..."}
-              multiline={true}
-            />
+          <Grid container spacing={8}>
+            <Grid item xs={12}>
+              <Card>
+                <CardContent>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="/static/images/remy.jpg"
+                    className={classes.avatar}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12}>
+              <MessageList messages={this.state.messages} />
+            </Grid>
+            <Grid container justify="center">
+              <Grid item xs={12}>
+                <TextField
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  placeholder={"type something..."}
+                  multiline={true}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={this.handleClick}
+                  variant="contained"
+                  color="primary"
+                >
+                  send
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button
-              onClick={this.handleClick}
-              variant="contained"
-              color="primary"
-            >
-              send
-            </Button>
-          </Grid>
         </Grid>
-      </Grid>
+      </Paper>
     );
   }
 }
