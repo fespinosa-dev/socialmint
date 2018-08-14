@@ -7,7 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import axios from "axios";
+import { geLoggedInUsers } from "../util/APIUtils";
 
 const styles = theme => ({
   root: {
@@ -22,12 +22,10 @@ class UserList extends React.Component {
   };
 
   componentDidMount() {
-    axios
-      .get(`http://192.168.8.101:8080/onlineUsers`, { withCredentials: true })
-      .then(res => {
-        const users = res.data;
-        this.setState({ users });
-      });
+    geLoggedInUsers().then(data => {
+      console.log(data);
+      const users = data;
+    });
   }
 
   render() {

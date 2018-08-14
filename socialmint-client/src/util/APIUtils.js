@@ -66,6 +66,17 @@ export function getCurrentUser() {
   });
 }
 
+export function geLoggedInUsers() {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject("No access token set.");
+  }
+
+  return request({
+    url: API_BASE_URL + "/users/online",
+    method: "GET"
+  });
+}
+
 export function getUserProfile(username) {
   return request({
     url: API_BASE_URL + "/users/" + username,

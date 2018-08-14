@@ -10,6 +10,7 @@ import SignUp from "../user/SignUp";
 import { getCurrentUser } from "../util/APIUtils";
 import { ACCESS_TOKEN } from "../constants";
 import PrivateRoute from "../common/PrivateRoute";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import "./App.css";
 
 class App extends Component {
@@ -19,7 +20,7 @@ class App extends Component {
     isLoading: false
   };
 
-  loadCurrentUser() {
+  loadCurrentUser = () => {
     this.setState({
       isLoading: true
     });
@@ -36,7 +37,7 @@ class App extends Component {
           isLoading: false
         });
       });
-  }
+  };
 
   componentWillMount() {
     this.loadCurrentUser();
@@ -63,6 +64,9 @@ class App extends Component {
   };
 
   render() {
+    if (this.state.isLoading) {
+      return <CircularProgress size={50} />;
+    }
     return (
       <div className="App">
         <Route
