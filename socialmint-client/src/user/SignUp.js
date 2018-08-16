@@ -79,12 +79,13 @@ class SignUp extends React.Component {
     signup(signupRequest)
       .then(response => {
         {
-          this.setState({ open: true, succes: true });
+          this.setState({ open: true, success: true });
         }
       })
       .catch(error => {
         {
-          this.setState({ open: true, succes: false });
+          console.log(error);
+          this.setState({ open: true, success: false });
         }
       });
   };

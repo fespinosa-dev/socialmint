@@ -61,7 +61,6 @@ class Login extends React.Component {
     const { usernameOrEmail, password } = this.state;
     login({ usernameOrEmail, password })
       .then(response => {
-        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         this.props.onLogin();
       })
       .catch(error => {

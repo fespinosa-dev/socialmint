@@ -1,18 +1,12 @@
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
+import Cookies from "js-cookie";
 
 const request = options => {
   const headers = new Headers({
     "Content-Type": "application/json"
   });
 
-  if (localStorage.getItem(ACCESS_TOKEN)) {
-    headers.append(
-      "Authorization",
-      "Bearer " + localStorage.getItem(ACCESS_TOKEN)
-    );
-  }
-
-  const defaults = { headers: headers };
+  const defaults = { headers: headers, credentials: "include" };
   options = Object.assign({}, defaults, options);
 
   return fetch(options.url, options).then(response =>
@@ -26,11 +20,18 @@ const request = options => {
 };
 
 export function login(loginRequest) {
-  return request({
-    url: API_BASE_URL + "/auth/signin",
-    method: "POST",
-    body: JSON.stringify(loginRequest)
-  });
+  let baseUrl = `http://localhost:8080/login?username=${
+    loginRequest.usernameOrEmail
+  }&password=${loginRequest.password}`;
+  return fetch(baseUrl, { credentials: "include", method: "post" }).then(
+    response =>
+      response.json().then(json => {
+        if (!response.ok) {
+          return Promise.reject(json);
+        }
+        return json;
+      })
+  );
 }
 
 export function signup(signupRequest) {
@@ -56,10 +57,6 @@ export function checkEmailAvailability(email) {
 }
 
 export function getCurrentUser() {
-  if (!localStorage.getItem(ACCESS_TOKEN)) {
-    return Promise.reject("No access token set.");
-  }
-
   return request({
     url: API_BASE_URL + "/user/me",
     method: "GET"
@@ -67,10 +64,6 @@ export function getCurrentUser() {
 }
 
 export function geLoggedInUsers() {
-  if (!localStorage.getItem(ACCESS_TOKEN)) {
-    return Promise.reject("No access token set.");
-  }
-
   return request({
     url: API_BASE_URL + "/users/online",
     method: "GET"
